@@ -1,0 +1,12 @@
+{
+  "name": "discord-bot-maker-bot",
+  "author": "Robert Borghese",
+  "main": "bot.js",
+  "version": "1.6.10",
+  "dependencies": {
+    "discord.js": "^13.6.0",
+    "fstorm": "latest",
+    "jimp": "latest"
+  },
+  "is-music-bot": true
+}
