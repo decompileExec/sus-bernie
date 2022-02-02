@@ -1,11 +1,11 @@
 /******************************************************
  * Discord Bot Maker Bot
- * Version 2.1.0
+ * Version 2.1.1
  * Robert Borghese
  ******************************************************/
 
 const DBM = {};
-DBM.version = "2.1.0";
+DBM.version = "2.1.1";
 
 const DiscordJS = (DBM.DiscordJS = require("discord.js"));
 
@@ -46,8 +46,9 @@ const MsgType = {
   MISSING_MUSIC_MODULES: 101,
 
   MUTABLE_VOLUME_DISABLED: 200,
-  ERROR_GETTING_YT_INFO: 201,
-  ERROR_CREATING_AUDIO: 202,
+  MUTABLE_VOLUME_NOT_IN_CHANNEL: 201,
+  ERROR_GETTING_YT_INFO: 202,
+  ERROR_CREATING_AUDIO: 203,
 
   MISSING_MEMBER_INTENT_FIND_USER_ID: 300,
   CANNOT_FIND_USER_BY_ID: 301,
@@ -178,6 +179,10 @@ function PrintError(type) {
 
     case MsgType.MUTABLE_VOLUME_DISABLED: {
       warn(format('Tried setting volume but "Mutable Volume" is disabled.'));
+      break;
+    }
+    case MsgType.MUTABLE_VOLUME_NOT_IN_CHANNEL: {
+      warn(format('Tried setting volume but the bot is not in a voice channel.'));
       break;
     }
 
@@ -499,7 +504,7 @@ Bot.validateSlashCommandParameterName = function (name) {
   if (name.length > 32) {
     name = name.substring(0, 32);
   }
-  if (name.match(/^[\w-]{1,32}$/)) {
+  if (name.match(/^[\p{L}\w-]{1,32}$/ui)) {
     return name.toLowerCase();
   }
   return false;
@@ -2841,17 +2846,26 @@ const { setTimeout } = require("node:timers/promises");
 Audio.ytdl = null;
 try {
   Audio.ytdl = require("ytdl-core");
-} catch {}
+} catch(e) {
+  Audio.ytdl = null;
+  console.error(e);
+}
 
 Audio.voice = null;
 try {
   Audio.voice = require("@discordjs/voice");
-} catch {}
+} catch(e) {
+  Audio.voice = null;
+  console.error(e);
+}
 
 Audio.rawYtdl = null;
 try {
-  Audio.rawYtdl = require("youtube-dl-exec").raw;
-} catch {}
+  Audio.rawYtdl = require("youtube-dl-exec").exec;
+} catch(e) {
+  Audio.rawYtdl = null;
+  console.error(e);
+}
 
 Audio.Subscription = class {
   /** @param {import('@discordjs/voice').VoiceConnection} voiceConnection */
@@ -2960,11 +2974,22 @@ Audio.Subscription = class {
     const nextTrack = this.queue.shift();
     try {
       const resource = await nextTrack.createAudioResource();
-      if (Audio.inlineVolume) resource.volume.volume = this.volume;
+      if (Audio.inlineVolume && typeof resource?.volume?.volume === "number") {
+        resource.volume.volume = this.volume ?? 0.5;
+      }
       // resource.encoder.setBitrate(this.bitrate * 1e3);
       this.audioPlayer.play(resource);
       this.queueLock = false;
-    } catch {
+    } catch(e) {
+      if(e.toString().includes("opus.node")) {
+        console.warn(`-- DBM Error Note --
+If you're seeing an error here, it's likely that the version of
+NodeJS/NPM or the operating system used to install @discordjs/opus
+is different from the NodeJS/NPM/OS running this bot.
+Try deleting "node_modules" and running "npm install" to resolve the issue.
+`);
+      }
+      console.error(e);
       this.queueLock = false;
       return this.processQueue();
     }
@@ -3012,7 +3037,7 @@ Audio.Track = class {
               resolve(
                 Audio.voice.createAudioResource(probe.stream, {
                   metadata: this,
-                  inlineVolume: Audio.inlineVolume,
+                  inlineVolume: !!Audio.inlineVolume,
                   inputType: probe.type,
                 }),
               ),
@@ -3045,7 +3070,7 @@ Audio.BasicTrack = class {
 
   createAudioResource() {
     return Audio.voice.createAudioResource(this.url, {
-      inlineVolume: Audio.inlineVolume,
+      inlineVolume: !!Audio.inlineVolume,
       inputType: Audio.voice.StreamType.Arbitrary,
     });
   }
@@ -3058,14 +3083,14 @@ Audio.connectToVoice = function (voiceChannel) {
     return PrintError(MsgType.MISSING_MUSIC_MODULES);
   }
 
-  Audio.inlineVolume ??= Files.data.settings.mutableVolume === "true";
+  Audio.inlineVolume ??= (Files.data.settings.mutableVolume ?? "true") === "true";
 
   const subscription = new this.Subscription(
     this.voice.joinVoiceChannel({
       adapterCreator: voiceChannel.guild.voiceAdapterCreator,
       channelId: voiceChannel.id,
       guildId: voiceChannel.guildId,
-      selfDeaf: Files.data.settings.autoDeafen === "true",
+      selfDeaf: (Files.data.settings.autoDeafen ?? "true") === "true",
     }),
   );
 
@@ -3097,10 +3122,10 @@ Audio.disconnectFromVoice = function (guild) {
 };
 
 Audio.setVolume = function (volume, guild) {
-  if (!this.inlineVolume) return PrintError(MsgType.MUTABLE_VOLUME_DISABLED);
+  if (Audio.inlineVolume === false) return PrintError(MsgType.MUTABLE_VOLUME_DISABLED);
   if (!guild) return;
   const subscription = this.getSubscription(guild);
-  if (!subscription) return;
+  if (!subscription) return PrintError(MsgType.MUTABLE_VOLUME_NOT_IN_CHANNEL);
   subscription.volume = volume;
   if (subscription.audioPlayer.state.status === this.voice.AudioPlayerStatus.Playing) {
     subscription.audioPlayer.state.resource.volume.volume = volume;
