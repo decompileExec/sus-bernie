@@ -1,1 +1,682 @@
-[null,{"name":"destroy","permissions":"NONE","restriction":"0","_id":"RUIyF","actions":[{"member":"5","varName":"user","storage":"1","varName2":"avatar","name":"Create Image from Avatar"},{"storage":"1","varName":"avatar","width":"150%","height":"100%","name":"Resize Image"},{"storage":"1","varName":"avatar","x":"0","y":"0","font":"fonts/Asimov.fnt","width":"","text":"this is dumm","name":"Draw Text on Image"},{"storage":"1","varName":"avatar","effect":"1","name":"Apply Image Effect"},{"storage":"1","varName":"avatar","channel":"0","varName2":"","message":"heheheh..","storage2":"0","varName3":"","name":"Send Image"}],"comType":"4","description":"Mentally abuses a select person.","parameters":[{"name":"user","description":"The user to abuse.","type":"USER","required":true,"choices":null}]},{"name":"say2","permissions":"NONE","restriction":"1","_id":"LoojH","actions":[{"info":"0","infoIndex":"1","storage":"1","varName":"text","name":"Store Command Params"},{"time":"2","measurement":"1","name":"Wait"},{"channel":"1","varName":"","message":"did you seriously just say ${tempVars(\"text\")}?","buttons":[],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"0","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"},{"time":"2","measurement":"1","name":"Wait"},{"channel":"1","varName":"","message":"what is WRONG WITH YOU?","storage":"0","varName2":"","name":"Send Message"},{"time":"2","measurement":"1","name":"Wait"},{"channel":"1","varName":"","message":"ARE YOU CRAZY!?","storage":"0","varName2":"","name":"Send Message"},{"time":"2","measurement":"1","name":"Wait"},{"channel":"1","varName":"","message":"That's it. I'm banning you from the server.","storage":"0","varName2":"","name":"Send Message"},{"time":"2","measurement":"1","name":"Wait"},{"channel":"1","varName":"","message":"⚠ ERROR: Cannot find method 'ban()'. Did you forget to define it?","storage":"0","varName2":"","name":"Send Message"},{"time":"2","measurement":"1","name":"Wait"},{"channel":"1","varName":"","message":"uhh.. i guess","storage":"0","varName2":"","name":"Send Message"},{"time":"2","measurement":"1","name":"Wait"},{"channel":"1","varName":"","message":"❌ CRITICAL ERROR: You do not have permission to do this action. Contact the server owner for help.","storage":"0","varName2":"","name":"Send Message"},{"time":"2","measurement":"1","name":"Wait"},{"channel":"1","varName":"","message":"oh, forget it. stupid permissions...","storage":"0","varName2":"","name":"Send Message"}],"comType":"4","description":"Same thing as say, but different lol","parameters":[{"name":"text","description":"The text to say.","type":"STRING","required":true,"choices":null}]},{"name":"clear","permissions":"MANAGE_MESSAGES","restriction":"1","_id":"rJMsL","actions":[{"info":"0","infoIndex":"1","storage":"1","varName":"amounttodelete","name":"Store Command Params"},{"channel":"0","count":"${tempVars(\"amounttodelete\")}","condition":"0","custom":"","varName":"","name":"Delete Bulk Messages"},{"channel":"0","varName":"","message":"✅ Deleted ${tempVars(\"amounttodelete\")} message(s).","buttons":[],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"intUpdate","editMessageVarName":"","storage":"1","varName2":"response","name":"Send Message"},{"time":"3","measurement":"1","name":"Wait"},{"storage":"1","varName":"response","reason":"","name":"Delete Message"},{"storage":"0","varName":"response","reason":"","name":"Delete Message"}],"comType":"4","description":"Clears a certain amount of messages the user specifies","parameters":[{"name":"amounttodelete","description":"The amount of messages to delete.","type":"INTEGER","required":true,"choices":null}]},{"name":"say","permissions":"SEND_MESSAGES","restriction":"1","_id":"GYGIt","actions":[{"info":"0","infoIndex":"1","storage":"1","varName":"text","name":"Store Command Params"},{"channel":"0","varName":"","message":"${tempVars(\"text\")}","buttons":[],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"intUpdate","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"}],"comType":"4","parameters":[{"name":"text","description":"What to make the bot say.","type":"STRING","required":true,"choices":null}],"description":"Makes the bot say what you want it to."},{"name":"robux","permissions":"NONE","permissions2":"NONE","restriction":"1","_id":"RFzva","actions":[{"channel":"0","varName":"","message":"how many rebex?","buttons":[{"name":"400 Roblecks","type":"PRIMARY","id":"msg-button-300cb25","row":"","url":"","emoji":"","mode":"MULTI","time":"","actions":[{"channel":"0","varName":"","message":"virus activated haha noob","buttons":[],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"0","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"}]},{"name":"800 Rubux","type":"PRIMARY","id":"msg-button-9e063e6","row":"","url":"","emoji":"","mode":"MULTI","time":"","actions":[{"channel":"0","varName":"","message":"youre poor haha","buttons":[],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"0","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"}]},{"name":"1700 Rubloccs","type":"PRIMARY","id":"msg-button-4df7865","row":"","url":"","emoji":"","mode":"MULTI","time":"","actions":[{"channel":"0","varName":"","message":"sussy baka 👓💥🅱","buttons":[],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"0","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"}]},{"name":"4500 Reblex","type":"PRIMARY","id":"msg-button-413a993","row":"","url":"","emoji":"","mode":"MULTI","time":"","actions":[{"channel":"0","varName":"","message":"i will give you 5000 rombacks for a processing fee of 10000 rombacks","buttons":[],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"0","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"}]},{"name":"10000 Rubiks","type":"PRIMARY","id":"msg-button-c7fd5dd","row":"","url":"","emoji":"","mode":"MULTI","time":"","actions":[{"channel":"0","varName":"","message":"💰 robacks","buttons":[],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"0","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"}]},{"name":"35000 Blobux","type":"PRIMARY","id":"msg-button-764d1bc","row":"","url":"","emoji":"","mode":"MULTI","time":"","actions":[{"channel":"0","varName":"","message":"😳😳😳😎😎😎 bobux","buttons":[],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"0","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"}]}],"selectMenus":[],"attachments":[],"embeds":[{"title":"Robux Generator 2022","url":"","color":"","timestamp":"false","imageUrl":"","thumbUrl":"","description":"Get free roblux.","fields":[{"name":"rabax","value":"an rabax do button press","inline":"false"}],"author":"Cash Inc.","authorUrl":"","authorIcon":"https://static.wikia.nocookie.net/fortnite/images/e/eb/V-Bucks_-_Icon_-_Fortnite.png/revision/latest?cb=20170806013747","footerText":"get roubucks now","footerIconUrl":""}],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"0","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"}],"comType":"4","description":"roubucks free for all"},{"name":"roles","permissions":"NONE","permissions2":"NONE","restriction":"1","_id":"oYlwa","actions":[{"member":"1","varName":"","info":"17","storage":"1","varName2":"roles","name":"Store Member Info"},{"storage":"1","varName":"roles","removeType":"0","position":"","storage2":"0","varName2":"","name":"Remove Item from List"},{"channel":"0","varName":"","message":"${tempVars(\"roles\")}","buttons":[],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"intUpdate","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"}],"comType":"4","description":"Gives you a list of your roles."},{"name":"insult","permissions":"NONE","permissions2":"NONE","restriction":"1","_id":"jQaIK","actions":[{"info":"0","infoIndex":"1","storage":"1","varName":"usertoinsult","name":"Store Command Params"},{"channel":"0","varName":"","message":"GUYS! ${tempVars(\"usertoinsult\")} IS DUMB LOLOLOLOL!!!!!!!","buttons":[{"name":"agree","type":"SUCCESS","id":"msg-button-a72194e","row":"","url":"","emoji":"","mode":"MULTI","time":"","actions":[{"channel":"1","varName":"","message":"yes","buttons":[],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"0","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"}]}],"selectMenus":[],"attachments":[],"embeds":[],"reply":true,"ephemeral":false,"tts":false,"overwrite":false,"dontSend":false,"editMessage":"0","editMessageVarName":"","storage":"0","varName2":"","name":"Send Message"}],"comType":"4","parameters":[{"name":"usertoinsult","description":"The user to insult.","type":"USER","required":true,"choices":null}],"description":"Breaks into one's home and steals all their crusty old keyboards."}]
+[
+    null,
+    {
+        "name": "destroy",
+        "permissions": "NONE",
+        "restriction": "0",
+        "_id": "RUIyF",
+        "actions": [
+            {
+                "member": "5",
+                "varName": "user",
+                "storage": "1",
+                "varName2": "avatar",
+                "name": "Create Image from Avatar"
+            },
+            {
+                "storage": "1",
+                "varName": "avatar",
+                "width": "150%",
+                "height": "100%",
+                "name": "Resize Image"
+            },
+            {
+                "storage": "1",
+                "varName": "avatar",
+                "x": "0",
+                "y": "0",
+                "font": "fonts/Asimov.fnt",
+                "width": "",
+                "text": "this is dumm",
+                "name": "Draw Text on Image"
+            },
+            {
+                "storage": "1",
+                "varName": "avatar",
+                "effect": "1",
+                "name": "Apply Image Effect"
+            },
+            {
+                "storage": "1",
+                "varName": "avatar",
+                "channel": "0",
+                "varName2": "",
+                "message": "heheheh..",
+                "storage2": "0",
+                "varName3": "",
+                "name": "Send Image"
+            }
+        ],
+        "comType": "4",
+        "description": "Mentally abuses a select person.",
+        "parameters": [
+            {
+                "name": "user",
+                "description": "The user to abuse.",
+                "type": "USER",
+                "required": true,
+                "choices": null
+            }
+        ]
+    },
+    {
+        "name": "say2",
+        "permissions": "NONE",
+        "restriction": "1",
+        "_id": "LoojH",
+        "actions": [
+            {
+                "info": "0",
+                "infoIndex": "1",
+                "storage": "1",
+                "varName": "text",
+                "name": "Store Command Params"
+            },
+            {
+                "time": "2",
+                "measurement": "1",
+                "name": "Wait"
+            },
+            {
+                "channel": "1",
+                "varName": "",
+                "message": "did you seriously just say ${tempVars(\"text\")}?",
+                "buttons": [],
+                "selectMenus": [],
+                "attachments": [],
+                "embeds": [],
+                "reply": true,
+                "ephemeral": false,
+                "tts": false,
+                "overwrite": false,
+                "dontSend": false,
+                "editMessage": "0",
+                "editMessageVarName": "",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            },
+            {
+                "time": "2",
+                "measurement": "1",
+                "name": "Wait"
+            },
+            {
+                "channel": "1",
+                "varName": "",
+                "message": "what is WRONG WITH YOU?",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            },
+            {
+                "time": "2",
+                "measurement": "1",
+                "name": "Wait"
+            },
+            {
+                "channel": "1",
+                "varName": "",
+                "message": "ARE YOU CRAZY!?",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            },
+            {
+                "time": "2",
+                "measurement": "1",
+                "name": "Wait"
+            },
+            {
+                "channel": "1",
+                "varName": "",
+                "message": "That's it. I'm banning you from the server.",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            },
+            {
+                "time": "2",
+                "measurement": "1",
+                "name": "Wait"
+            },
+            {
+                "channel": "1",
+                "varName": "",
+                "message": "⚠ ERROR: Cannot find method 'ban()'. Did you forget to define it?",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            },
+            {
+                "time": "2",
+                "measurement": "1",
+                "name": "Wait"
+            },
+            {
+                "channel": "1",
+                "varName": "",
+                "message": "uhh.. i guess",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            },
+            {
+                "time": "2",
+                "measurement": "1",
+                "name": "Wait"
+            },
+            {
+                "channel": "1",
+                "varName": "",
+                "message": "❌ CRITICAL ERROR: You do not have permission to do this action. Contact the server owner for help.",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            },
+            {
+                "time": "2",
+                "measurement": "1",
+                "name": "Wait"
+            },
+            {
+                "channel": "1",
+                "varName": "",
+                "message": "oh, forget it. stupid permissions...",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            }
+        ],
+        "comType": "4",
+        "description": "Same thing as say, but different lol",
+        "parameters": [
+            {
+                "name": "text",
+                "description": "The text to say.",
+                "type": "STRING",
+                "required": true,
+                "choices": null
+            }
+        ]
+    },
+    {
+        "name": "clear",
+        "permissions": "MANAGE_MESSAGES",
+        "restriction": "1",
+        "_id": "rJMsL",
+        "actions": [
+            {
+                "info": "0",
+                "infoIndex": "1",
+                "storage": "1",
+                "varName": "amounttodelete",
+                "name": "Store Command Params"
+            },
+            {
+                "channel": "0",
+                "count": "${tempVars(\"amounttodelete\")}",
+                "condition": "0",
+                "custom": "",
+                "varName": "",
+                "name": "Delete Bulk Messages"
+            },
+            {
+                "channel": "0",
+                "varName": "",
+                "message": "✅ Deleted ${tempVars(\"amounttodelete\")} message(s).",
+                "buttons": [],
+                "selectMenus": [],
+                "attachments": [],
+                "embeds": [],
+                "reply": true,
+                "ephemeral": false,
+                "tts": false,
+                "overwrite": false,
+                "dontSend": false,
+                "editMessage": "intUpdate",
+                "editMessageVarName": "",
+                "storage": "1",
+                "varName2": "response",
+                "name": "Send Message"
+            },
+            {
+                "time": "3",
+                "measurement": "1",
+                "name": "Wait"
+            },
+            {
+                "storage": "1",
+                "varName": "response",
+                "reason": "",
+                "name": "Delete Message"
+            },
+            {
+                "storage": "0",
+                "varName": "response",
+                "reason": "",
+                "name": "Delete Message"
+            }
+        ],
+        "comType": "4",
+        "description": "Clears a certain amount of messages the user specifies",
+        "parameters": [
+            {
+                "name": "amounttodelete",
+                "description": "The amount of messages to delete.",
+                "type": "INTEGER",
+                "required": true,
+                "choices": null
+            }
+        ]
+    },
+    {
+        "name": "say",
+        "permissions": "SEND_MESSAGES",
+        "restriction": "1",
+        "_id": "GYGIt",
+        "actions": [
+            {
+                "info": "0",
+                "infoIndex": "1",
+                "storage": "1",
+                "varName": "text",
+                "name": "Store Command Params"
+            },
+            {
+                "channel": "0",
+                "varName": "",
+                "message": "${tempVars(\"text\")}",
+                "buttons": [],
+                "selectMenus": [],
+                "attachments": [],
+                "embeds": [],
+                "reply": true,
+                "ephemeral": false,
+                "tts": false,
+                "overwrite": false,
+                "dontSend": false,
+                "editMessage": "intUpdate",
+                "editMessageVarName": "",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            }
+        ],
+        "comType": "4",
+        "parameters": [
+            {
+                "name": "text",
+                "description": "What to make the bot say.",
+                "type": "STRING",
+                "required": true,
+                "choices": null
+            }
+        ],
+        "description": "Makes the bot say what you want it to."
+    },
+    {
+        "name": "robux",
+        "permissions": "NONE",
+        "permissions2": "NONE",
+        "restriction": "1",
+        "_id": "RFzva",
+        "actions": [
+            {
+                "channel": "0",
+                "varName": "",
+                "message": "how many rebex?",
+                "buttons": [
+                    {
+                        "name": "400 Roblecks",
+                        "type": "PRIMARY",
+                        "id": "msg-button-300cb25",
+                        "row": "",
+                        "url": "",
+                        "emoji": "",
+                        "mode": "MULTI",
+                        "time": "",
+                        "actions": [
+                            {
+                                "channel": "0",
+                                "varName": "",
+                                "message": "virus activated haha noob",
+                                "buttons": [],
+                                "selectMenus": [],
+                                "attachments": [],
+                                "embeds": [],
+                                "reply": true,
+                                "ephemeral": false,
+                                "tts": false,
+                                "overwrite": false,
+                                "dontSend": false,
+                                "editMessage": "0",
+                                "editMessageVarName": "",
+                                "storage": "0",
+                                "varName2": "",
+                                "name": "Send Message"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "800 Rubux",
+                        "type": "PRIMARY",
+                        "id": "msg-button-9e063e6",
+                        "row": "",
+                        "url": "",
+                        "emoji": "",
+                        "mode": "MULTI",
+                        "time": "",
+                        "actions": [
+                            {
+                                "channel": "0",
+                                "varName": "",
+                                "message": "youre poor haha",
+                                "buttons": [],
+                                "selectMenus": [],
+                                "attachments": [],
+                                "embeds": [],
+                                "reply": true,
+                                "ephemeral": false,
+                                "tts": false,
+                                "overwrite": false,
+                                "dontSend": false,
+                                "editMessage": "0",
+                                "editMessageVarName": "",
+                                "storage": "0",
+                                "varName2": "",
+                                "name": "Send Message"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "1700 Rubloccs",
+                        "type": "PRIMARY",
+                        "id": "msg-button-4df7865",
+                        "row": "",
+                        "url": "",
+                        "emoji": "",
+                        "mode": "MULTI",
+                        "time": "",
+                        "actions": [
+                            {
+                                "channel": "0",
+                                "varName": "",
+                                "message": "sussy baka 👓💥🅱",
+                                "buttons": [],
+                                "selectMenus": [],
+                                "attachments": [],
+                                "embeds": [],
+                                "reply": true,
+                                "ephemeral": false,
+                                "tts": false,
+                                "overwrite": false,
+                                "dontSend": false,
+                                "editMessage": "0",
+                                "editMessageVarName": "",
+                                "storage": "0",
+                                "varName2": "",
+                                "name": "Send Message"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "4500 Reblex",
+                        "type": "PRIMARY",
+                        "id": "msg-button-413a993",
+                        "row": "",
+                        "url": "",
+                        "emoji": "",
+                        "mode": "MULTI",
+                        "time": "",
+                        "actions": [
+                            {
+                                "channel": "0",
+                                "varName": "",
+                                "message": "i will give you 5000 rombacks for a processing fee of 10000 rombacks",
+                                "buttons": [],
+                                "selectMenus": [],
+                                "attachments": [],
+                                "embeds": [],
+                                "reply": true,
+                                "ephemeral": false,
+                                "tts": false,
+                                "overwrite": false,
+                                "dontSend": false,
+                                "editMessage": "0",
+                                "editMessageVarName": "",
+                                "storage": "0",
+                                "varName2": "",
+                                "name": "Send Message"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "10000 Rubiks",
+                        "type": "PRIMARY",
+                        "id": "msg-button-c7fd5dd",
+                        "row": "",
+                        "url": "",
+                        "emoji": "",
+                        "mode": "MULTI",
+                        "time": "",
+                        "actions": [
+                            {
+                                "channel": "0",
+                                "varName": "",
+                                "message": "💰 robacks",
+                                "buttons": [],
+                                "selectMenus": [],
+                                "attachments": [],
+                                "embeds": [],
+                                "reply": true,
+                                "ephemeral": false,
+                                "tts": false,
+                                "overwrite": false,
+                                "dontSend": false,
+                                "editMessage": "0",
+                                "editMessageVarName": "",
+                                "storage": "0",
+                                "varName2": "",
+                                "name": "Send Message"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "35000 Blobux",
+                        "type": "PRIMARY",
+                        "id": "msg-button-764d1bc",
+                        "row": "",
+                        "url": "",
+                        "emoji": "",
+                        "mode": "MULTI",
+                        "time": "",
+                        "actions": [
+                            {
+                                "channel": "0",
+                                "varName": "",
+                                "message": "😳😳😳😎😎😎 bobux",
+                                "buttons": [],
+                                "selectMenus": [],
+                                "attachments": [],
+                                "embeds": [],
+                                "reply": true,
+                                "ephemeral": false,
+                                "tts": false,
+                                "overwrite": false,
+                                "dontSend": false,
+                                "editMessage": "0",
+                                "editMessageVarName": "",
+                                "storage": "0",
+                                "varName2": "",
+                                "name": "Send Message"
+                            }
+                        ]
+                    }
+                ],
+                "selectMenus": [],
+                "attachments": [],
+                "embeds": [
+                    {
+                        "title": "Robux Generator 2022",
+                        "url": "",
+                        "color": "",
+                        "timestamp": "false",
+                        "imageUrl": "",
+                        "thumbUrl": "",
+                        "description": "Get free roblux.",
+                        "fields": [
+                            {
+                                "name": "rabax",
+                                "value": "an rabax do button press",
+                                "inline": "false"
+                            }
+                        ],
+                        "author": "Cash Inc.",
+                        "authorUrl": "",
+                        "authorIcon": "https://static.wikia.nocookie.net/fortnite/images/e/eb/V-Bucks_-_Icon_-_Fortnite.png/revision/latest?cb=20170806013747",
+                        "footerText": "get roubucks now",
+                        "footerIconUrl": ""
+                    }
+                ],
+                "reply": true,
+                "ephemeral": false,
+                "tts": false,
+                "overwrite": false,
+                "dontSend": false,
+                "editMessage": "0",
+                "editMessageVarName": "",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            }
+        ],
+        "comType": "4",
+        "description": "roubucks free for all"
+    },
+    {
+        "name": "roles",
+        "permissions": "NONE",
+        "permissions2": "NONE",
+        "restriction": "1",
+        "_id": "oYlwa",
+        "actions": [
+            {
+                "member": "1",
+                "varName": "",
+                "info": "17",
+                "storage": "1",
+                "varName2": "roles",
+                "name": "Store Member Info"
+            },
+            {
+                "storage": "1",
+                "varName": "roles",
+                "removeType": "0",
+                "position": "",
+                "storage2": "0",
+                "varName2": "",
+                "name": "Remove Item from List"
+            },
+            {
+                "channel": "0",
+                "varName": "",
+                "message": "${tempVars(\"roles\")}",
+                "buttons": [],
+                "selectMenus": [],
+                "attachments": [],
+                "embeds": [],
+                "reply": true,
+                "ephemeral": false,
+                "tts": false,
+                "overwrite": false,
+                "dontSend": false,
+                "editMessage": "intUpdate",
+                "editMessageVarName": "",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            }
+        ],
+        "comType": "4",
+        "description": "Gives you a list of your roles."
+    },
+    {
+        "name": "insult",
+        "permissions": "NONE",
+        "permissions2": "NONE",
+        "restriction": "1",
+        "_id": "jQaIK",
+        "actions": [
+            {
+                "info": "0",
+                "infoIndex": "1",
+                "storage": "1",
+                "varName": "usertoinsult",
+                "name": "Store Command Params"
+            },
+            {
+                "channel": "0",
+                "varName": "",
+                "message": "GUYS! ${tempVars(\"usertoinsult\")} IS DUMB LOLOLOLOL!!!!!!!",
+                "buttons": [
+                    {
+                        "name": "agree",
+                        "type": "SUCCESS",
+                        "id": "msg-button-a72194e",
+                        "row": "",
+                        "url": "",
+                        "emoji": "",
+                        "mode": "MULTI",
+                        "time": "",
+                        "actions": [
+                            {
+                                "channel": "1",
+                                "varName": "",
+                                "message": "yes",
+                                "buttons": [],
+                                "selectMenus": [],
+                                "attachments": [],
+                                "embeds": [],
+                                "reply": true,
+                                "ephemeral": false,
+                                "tts": false,
+                                "overwrite": false,
+                                "dontSend": false,
+                                "editMessage": "0",
+                                "editMessageVarName": "",
+                                "storage": "0",
+                                "varName2": "",
+                                "name": "Send Message"
+                            }
+                        ]
+                    }
+                ],
+                "selectMenus": [],
+                "attachments": [],
+                "embeds": [],
+                "reply": true,
+                "ephemeral": false,
+                "tts": false,
+                "overwrite": false,
+                "dontSend": false,
+                "editMessage": "0",
+                "editMessageVarName": "",
+                "storage": "0",
+                "varName2": "",
+                "name": "Send Message"
+            }
+        ],
+        "comType": "4",
+        "parameters": [
+            {
+                "name": "usertoinsult",
+                "description": "The user to insult.",
+                "type": "USER",
+                "required": true,
+                "choices": null
+            }
+        ],
+        "description": "Breaks into one's home and steals all their crusty old keyboards."
+    }
+]

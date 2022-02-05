@@ -1,2 +1,4 @@
+# ignore packages
 node_modules
+# ignore visual studio metadata
 .vs
