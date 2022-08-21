@@ -35,7 +35,7 @@ module.exports = {
   // This will make it so the patch version (0.0.X) is not checked.
   //---------------------------------------------------------------------
 
-  meta: { version: "2.1.1", preciseCheck: true, author: null, authorUrl: null, downloadUrl: null },
+  meta: { version: "2.1.5", preciseCheck: true, author: null, authorUrl: null, downloadUrl: null },
 
   //---------------------------------------------------------------------
   // Action Fields
@@ -77,7 +77,7 @@ module.exports = {
 
 <br><br><br><br>
 
-<retrieve-from-variable dropdownLabel="Source Image" selectId="image" variableContainerId="varNameContainer2" variableInputId="imageVarName"></retrieve-from-variable>
+<retrieve-from-variable dropdownLabel="Source Image/Emoji" selectId="image" variableContainerId="varNameContainer2" variableInputId="imageVarName"></retrieve-from-variable>
 
 <br><br><br><br>
 
@@ -110,24 +110,34 @@ module.exports = {
 
     const imageStorage = parseInt(data.image, 10);
     const imageVarName = this.evalMessage(data.imageVarName, cache);
-    const image = this.getVariable(imageStorage, imageVarName, cache);
+    var imageOrEmoji = this.getVariable(imageStorage, imageVarName, cache);
 
     const Images = this.getDBM().Images;
-    Images.createBuffer(image)
-      .then((buffer) => {
-        if (Array.isArray(role)) {
-          this.callListFunc(role, "setIcon", [buffer, reason])
-            .then(() => this.callNextAction(cache));
-        } else if (role?.edit) {
-          role
-            .setIcon(buffer, reason)
-            .then(() => this.callNextAction(cache))
-            .catch((err) => this.displayError(data, cache, err));
-        } else {
-          this.callNextAction(cache);
-        }
-      })
-      .catch((err) => this.displayError(data, cache, err));
+    const DiscordJS = this.getDBM().DiscordJS;
+
+    if (Images.isImage(imageOrEmoji)) {
+      imageOrEmoji = await Images.createBuffer(imageOrEmoji);
+    } else if (imageOrEmoji instanceof DiscordJS.Emoji) {
+      // do nothing, setIcon accepts Emoji class
+    } else if (typeof imageOrEmoji === "string") {
+      if (imageOrEmoji.startsWith("http")) {
+        imageOrEmoji = await Images.getImage(image);
+      } else {
+        // otherwise, the string could be Emoji-resolvable, so do nothing
+      }
+    }
+    
+    if (Array.isArray(role)) {
+      this.callListFunc(role, "setIcon", [imageOrEmoji, reason])
+        .then(() => this.callNextAction(cache));
+    } else if (role?.setIcon) {
+      role
+        .setIcon(imageOrEmoji, reason)
+        .then(() => this.callNextAction(cache))
+        .catch((err) => this.displayError(data, cache, err));
+    } else {
+      this.callNextAction(cache);
+    }
   },
 
   //---------------------------------------------------------------------

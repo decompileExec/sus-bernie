@@ -1,15 +1,15 @@
 /******************************************************
  * Discord Bot Maker Bot
- * Version 2.1.1
+ * Version 2.1.5
  * Robert Borghese
  ******************************************************/
 
 const DBM = {};
-DBM.version = "2.1.1";
+DBM.version = "2.1.5";
 
 const DiscordJS = (DBM.DiscordJS = require("discord.js"));
 
-const requiredDjsVersion = "13.6.0";
+const requiredDjsVersion = "13.7.0";
 if (DiscordJS.version < requiredDjsVersion) {
   console.log(
     `This version of Discord Bot Maker requires discord.js ${requiredDjsVersion}+.\nPlease use "Project > Module Manager" and "Project > Reinstall Node Modules" to update to discord.js ${requiredDjsVersion}.\n`,
@@ -455,6 +455,9 @@ Bot.mergeSubCommandIntoCommandData = function (names, data) {
   }
 
   if (names.length === 2) {
+    if (!baseCommand.options) {
+      baseCommand.options = [];
+    }
     if (baseCommand.options.find(d => d.name === data.name && d.type === "SUB_COMMAND_GROUP")) {
       PrintError(MsgType.SUB_COMMAND_GROUP_ALREADY_EXISTS, names.join(" "));
     } else {
@@ -891,6 +894,8 @@ Bot.onInteraction = function (interaction) {
     this.onSlashCommandInteraction(interaction);
   } else if (interaction.isContextMenu()) {
     this.onContextMenuInteraction(interaction);
+  } else if (interaction.isModalSubmit()) {
+    Actions.checkModalSubmitResponses(interaction);
   } else {
     if (interaction.component?.type === "BUTTON") {
       interaction._button = interaction.component;
@@ -1513,6 +1518,12 @@ Actions.displayError = function (data, cache, err) {
 };
 
 Actions.getParameterFromInteraction = function (interaction, name) {
+  if (interaction.__originalInteraction) {
+    const result = this.getParameterFromInteraction(interaction.__originalInteraction, name);
+    if (result !== null) {
+      return result;
+    }
+  }
   if (interaction?.options?.get) {
     const option = interaction.options.get(name.toLowerCase());
     return this.getParameterFromParameterData(option);
@@ -1540,6 +1551,9 @@ Actions.getParameterFromParameterData = function (option) {
       }
       case "MENTIONABLE": {
         return option.member ?? option.channel ?? option.role ?? option.user;
+      }
+      case "ATTACHMENT": {
+        return option.attachment?.url ?? "";
       }
     }
   }
@@ -2171,6 +2185,20 @@ Actions.generateSelectMenu = function (select, cache) {
   return selectData;
 };
 
+Actions.generateTextInput = function (textInput, defaultCustomId, cache) {
+  const inputTextData = {
+    type: "TEXT_INPUT",
+    customId: !!textInput.id ? textInput.id : defaultCustomId,
+    label: this.evalMessage(textInput.name, cache),
+    placeholder: this.evalMessage(textInput.placeholder, cache),
+    minLength: parseInt(this.evalMessage(textInput.minLength, cache), 10) ?? 0,
+    maxLength: parseInt(this.evalMessage(textInput.maxLength, cache), 10) ?? 100,
+    style: textInput.style,
+    required: textInput.required === "true"
+  };
+  return inputTextData;
+};
+
 Actions.addButtonToActionRowArray = function (array, rowText, buttonData, cache) {
   let row = 0;
   if (!rowText) {
@@ -2237,9 +2265,39 @@ Actions.addSelectToActionRowArray = function (array, rowText, selectData, cache)
   }
 };
 
+Actions.addTextInputToActionRowArray = function (array, rowText, textInput, cache) {
+  let row = 0;
+  if (!rowText) {
+    if (array.length !== 0) {
+      row = array.length - 1;
+      if (array[row].length >= 5) {
+        row++;
+      }
+    }
+  } else {
+    row = parseInt(rowText, 10) - 1;
+  }
+  if (row >= 0 && row < 5) {
+    while (array.length <= row + 1) {
+      array.push([]);
+    }
+    if (array[row].length >= 1) {
+      this.displayError(
+        null,
+        cache,
+        `Action row #${row} cannot have a text input when there are any buttons on it!`,
+      );
+    } else {
+      array[row].push(textInput);
+    }
+  } else {
+    this.displayError(null, cache, `Invalid action row: '${rowText}'.`);
+  }
+};
+
 Actions.checkTemporaryInteractionResponses = function (interaction) {
   const customId = interaction.customId;
-  const messageId = interaction.message.id;
+  const messageId = interaction.message?.id;
   if (this._temporaryInteractions?.[messageId]) {
     const interactions = this._temporaryInteractions[messageId];
     for (let i = 0; i < interactions.length; i++) {
@@ -2314,6 +2372,24 @@ Actions.clearAllTemporaryInteractions = function (messageId) {
   if (this._temporaryInteractions?.[messageId]) {
     this._temporaryInteractions[messageId] = null;
     delete this._temporaryInteractions[messageId];
+  }
+};
+
+Actions.registerModalSubmitResponses = function (interactionId, callback) {
+  this._temporaryInteractions ??= {};
+  this._temporaryInteractions[interactionId] = callback;
+
+  // clear up interaction after a while
+  require("node:timers").setTimeout(() => {
+    this.clearAllTemporaryInteractions(interactionId);
+  }, 60 * 60 * 1000).unref();
+};
+
+Actions.checkModalSubmitResponses = function (interaction) {
+  const interactionId = interaction.customId;
+  if (this._temporaryInteractions?.[interactionId]) {
+    this._temporaryInteractions[interactionId](interaction);
+    this.clearAllTemporaryInteractions(interactionId);
   }
 };
 
@@ -2524,9 +2600,16 @@ Images.getFont = function (url) {
   return this.JIMP.loadFont(Actions.getLocalFile(url));
 };
 
+Images.isImage = function(obj) {
+  if (!Images.JIMP) {
+    return false;
+  }
+  return obj instanceof Images.JIMP;
+}
+
 Images.createBuffer = function (image) {
   return new Promise((resolve, reject) => {
-    image.getBuffer(this.JIMP.MIME_PNG, function (err, buffer) {
+    image.getBuffer(this.JIMP.AUTO, function (err, buffer) {
       if (err) {
         reject(err);
       } else {
@@ -2843,12 +2926,29 @@ Files.initEncryption();
 const Audio = (DBM.Audio = {});
 const { setTimeout } = require("node:timers/promises");
 
+Audio.checkIfHasDependency = function(key) {
+  if(!Audio.packageJson) {
+    const path = require("node:path");
+    Audio.packageJson = require("node:fs").readFileSync(path.join(__dirname, "package.json"));
+    Audio.packageJson = JSON.parse(Audio.packageJson).dependencies;
+    if(!Audio.packageJson) {
+      Audio.packageJson = 1;
+    }
+  }
+  if(Audio.packageJson !== 1) {
+    return !!Audio.packageJson[key];
+  }
+  return false;
+}
+
 Audio.ytdl = null;
 try {
   Audio.ytdl = require("ytdl-core");
 } catch(e) {
   Audio.ytdl = null;
-  console.error(e);
+  if(Audio.checkIfHasDependency("ytdl-core")) {
+    console.error(e);
+  }
 }
 
 Audio.voice = null;
@@ -2856,7 +2956,9 @@ try {
   Audio.voice = require("@discordjs/voice");
 } catch(e) {
   Audio.voice = null;
-  console.error(e);
+  if(Audio.checkIfHasDependency("@discordjs/voice")) {
+    console.error(e);
+  }
 }
 
 Audio.rawYtdl = null;
@@ -2864,7 +2966,9 @@ try {
   Audio.rawYtdl = require("youtube-dl-exec").exec;
 } catch(e) {
   Audio.rawYtdl = null;
-  console.error(e);
+  if(Audio.checkIfHasDependency("youtube-dl-exec")) {
+    console.error(e);
+  }
 }
 
 Audio.Subscription = class {
@@ -2887,7 +2991,9 @@ Audio.Subscription = class {
             await Audio.voice.entersState(this.voiceConnection, Audio.voice.VoiceConnectionStatus.Connecting, 5_000);
           } catch {
             // Probably removed from voice channel
-            this.voiceConnection.destroy();
+            if (this.voiceConnection.state.status !== Audio.voice.VoiceConnectionStatus.Destroyed) {
+              this.voiceConnection.destroy();
+            }
           }
         } else if (this.voiceConnection.rejoinAttempts < 5) {
           await setTimeout((this.voiceConnection.rejoinAttempts + 1) * 5_000);
@@ -3084,6 +3190,22 @@ Audio.connectToVoice = function (voiceChannel) {
   }
 
   Audio.inlineVolume ??= (Files.data.settings.mutableVolume ?? "true") === "true";
+
+  var existingSubscription = this.subscriptions.get(voiceChannel?.guild?.id);
+  if (existingSubscription) {
+
+    const status = existingSubscription.voiceConnection?.state?.status;
+    if (status === Audio.voice.VoiceConnectionStatus.Disconnected) {
+      existingSubscription.voiceConnection.destroy();
+      existingSubscription = null;
+    } else if (status === Audio.voice.VoiceConnectionStatus.Destroyed) {
+      existingSubscription = null;
+    }
+
+    if (existingSubscription?.voiceConnection?.joinConfig?.channelId === voiceChannel.id) {
+      return;
+    }
+  }
 
   const subscription = new this.Subscription(
     this.voice.joinVoiceChannel({
