@@ -6,7 +6,13 @@
   "dependencies": {
     "discord.js": "^13.7.0",
     "fstorm": "latest",
-    "jimp": "latest"
+    "jimp": "latest",
+    "@discordjs/voice": "latest",
+    "@discordjs/opus": "latest",
+    "ffmpeg-static": "latest",
+    "tweetnacl": "latest",
+    "youtube-dl-exec": "^2.0.2",
+    "ytdl-core": "^4.10.0"
   },
   "is-music-bot": true
 }
