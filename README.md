@@ -7,3 +7,4 @@ my favorite is /destroy {mention}, which downloads someone's avatar, ruins it, t
 the invite is: https://discord.com/api/oauth2/authorize?client_id=913105450197725204&permissions=517647760448&scope=bot%20applications.commands
 
 if you want to download the code and run it yourself, you'll have to run `npm install` in order to install the dependencies for the bot to work.
+and you'll need to insert your own token in data/settings.json, by the way.
